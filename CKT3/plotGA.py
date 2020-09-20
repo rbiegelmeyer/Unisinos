@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    Ferramenta de plot Análise de Circuitos no Domínio da Frequência - Trabalho GA
+    Ferramenta de plot Análise de Circuitos no Domínio da Frequência - Trabalho GA.
+    Gráfico é construido a partir de um arquivo csv de pontos extraído do LTSpice.
 """
 
 __author__: "Roberto Biegelmeyer"
