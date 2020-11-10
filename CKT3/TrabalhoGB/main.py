@@ -1,3 +1,7 @@
+''' 
+    author: Roberto Biegelmeyer
+'''
+
 from os import listdir
 import matplotlib.pyplot as plt
 import pandas as pd
