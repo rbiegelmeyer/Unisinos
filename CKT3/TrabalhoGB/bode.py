@@ -60,31 +60,29 @@ for input_filename in input_filenames:                          # Itera todos os
     zero_crossings = np.where(np.diff(np.sign(y1)))[0]          # Determina os zero crossing
     dot_period = zero_crossings[1] - zero_crossings[0]          # Diferenca entre um e outro determina periodo
 
-    # zero_crossings_2 = np.where(np.diff(np.sign(y2)))[0]
-    # dot_delay = zero_crossings_2[-1] - zero_crossings[-1]
+
     xcorr = signal.correlate(y1.tolist(), y2.tolist())          # Correlaciona um sinal ao outro para determinar os cruzamentos
     dot_delay = 999 - xcorr.argmax()                            # Determina o delay de um sinal com outro atraves
-    # phase = - (float(dot_delay) / float(dot_period)) * (4 * pi / 4) * (180/pi)               # Determina a defasagem de sinal  
-    # phase = - (float(dot_delay) / float(dot_period)) * (pi) * (180/pi)               # Determina a defasagem de sinal 
-    phase = - (float(dot_delay) / float(dot_period)) * (180)               # Determina a defasagem de sinal  
+    phase = - (float(dot_delay) / float(dot_period)) * (180)    # Determina a defasagem de sinal  
     # print('Delay: {} \nPeriod: {} \nPhase: {}'.format(dot_delay, dot_period, phase))
 
     row = {
-        'frequency': freq_rad,
-        'magnitude': gain_db,
-        'phase': phase
+        'frequency': str(int(freq_rad)),
+        'magnitude': round(gain_db, 2),
+        'phase': round(phase, 2)
         }                                                       # Cria row para inserir no df
     df_total = df_total.append(row, ignore_index=True)          # Insere row no dataframe
 
 
-print(df_total)
+df_total.to_csv(r'save.csv')                                    # Salva dataframe em um arquivo csv
+
 freqs = df_total['frequency']                                   # Extrai serie de frequencias
 mags = df_total['magnitude']                                    # Extrai serie de magnitudes
 phases = df_total['phase']                                      # Extrai serie de phases
 
 # Plot Bode
 plt.figure()
-plt.semilogx(freqs, mags, color='black')                                       # Bode magnitude plot
+plt.semilogx(freqs, mags, color='black')                        # Bode magnitude plot
 plt.scatter(freqs, mags, color='black')
 plt.title('Frequency x Magnitude')
 plt.xlabel('Frequency (rad/s)')
@@ -97,7 +95,7 @@ plt.grid(True, which='both', axis='x')
 plt.savefig('imagens/freqXmag_1.png')
 
 plt.figure()
-plt.semilogx(freqs, phases, color='black')                                      # Bode phase plo
+plt.semilogx(freqs, phases, color='black')                      # Bode phase plo
 plt.scatter(freqs, phases, color='black')
 plt.title('Frequency x Phase')
 plt.xlabel('Frequency (rad/s)')
@@ -110,8 +108,5 @@ plt.grid(True, which='major', axis='y')
 plt.grid(True, which='both', axis='x')
 plt.savefig('imagens/freqXpha_1.png')
 
-
-plt.show()                                                      # Show
+# plt.show()                                                      # Show
  
-
-df_total.to_csv(r'save.csv')                                    # Salva dataframe em um arquivo csv
